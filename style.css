@@ -1,5 +1,11 @@
 body {
 	background: #f9e933;
+	font-family: 'Droid Sans';
+}
+.amazeriffic {
+	font-style: italic;
+	color: orange;
+	font-family: 'Ubuntu', sans-serif;
 }
 
 header, main, footer {
@@ -11,14 +17,27 @@ header .container, main .container, footer .container {
 	margin: auto;
 }
 
+header nav a + a::before{
+	content: "|";
+	font-size: 1.3em;
+}
+
+main .container {
+	overflow: auto;
+	margin-top: 15px;
+	margin-bottom: 30px;
+}
+
 header {
 	background: white;
 	overflow: auto;
+	padding: 10px 0px 10px 0px;
 }
 
 header h1 {
 	float: left;
 	width: 570px;
+	font-size: 3em;
 }
 
 header nav {
@@ -41,6 +60,14 @@ main .logo {
 	float: right;
 }
 
+div .what {
+	padding: 10px;
+}
+
+div .why {
+	padding: 10px;
+}
+
 footer .contact {
 	width: 570px;
 	float: left;
@@ -51,4 +78,56 @@ footer .sitemap {
 	float: right;
 }
 
+h1 {
+	font-size: 3em;
+	font-style: bold;
+	margin-bottom: 5px;
+}
 
+h2 {
+	font-size: 2em;
+	font-style: bold;
+	margin-bottom: 5px;
+}
+
+h3 {
+	font-size: 1.3em;
+	font-style: bold;
+	margin-bottom: 5px;
+}
+
+h4 {
+	font-size: 1.2em;
+	font-style: bold;
+	margin-bottom: 5px;
+}
+
+h5 {
+	font-size: 1.1em;
+	font-style: bold;
+	margin-bottom: 5px;
+}
+
+header a, footer a {
+	text-decoration: none;
+	color: gray;
+}
+
+a:hover { 
+	color:red;
+}
+footer .container {
+	margin-top: 25px;
+}
+
+footer div.contact h5 {
+	margin-bottom: 5px;
+}
+
+footer .sitemap ul{
+	columns: 2;
+}
+
+footer .sitemap ul li {
+	margin-bottom: 2px;
+}
