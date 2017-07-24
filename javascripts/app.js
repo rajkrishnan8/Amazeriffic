@@ -1,17 +1,28 @@
 var organizedByTags = function (toDoObjects) {
-	var tags = [];
-	var organizedByTag = [];
+	var result = {};
+	result.tags = [];
+	result.list = [];
 
-
-	toDoObjects.map(function(todo){
-		todo.tags.forEach(function(tag){
-			if(tags.indexOf(tag) < 0){
-				tags.push(tag);
+	result.addToDo = function(description, tags){
+		tags.forEach(function(tag) {
+			var ind = result.tags.indexOf(tag);
+			if(ind < 0) {
+				ind = result.tags.length;
+				result.tags.push(tag);
+				result.list.push({name: tag, toDos: []});
 			}
+
+			result.list[ind].toDos.push(description);
 		});
+	}
+
+
+	toDoObjects.forEach(function(todo){
+		result.addToDo(todo.description, todo.tags);
 	});
 
-	console.log(tags);
+	return result;
+
 };
 
 var main = function () {
@@ -35,7 +46,7 @@ var main = function () {
 			tags: ["work"]
 		},
 		{
-			description: "Take Gracies to the park",
+			description: "Take Gracie to the park",
 			tags: ["chores", "pets"]
 		}, 
 		{
@@ -43,6 +54,8 @@ var main = function () {
 			tags: ["writing", "work"]
 		}
 	];
+
+	var organizedByTag = organizedByTags(toDoObjects);
 
 	var toDos = toDoObjects.map(function(todoObj){return todoObj.description;});
 	
@@ -63,27 +76,13 @@ var main = function () {
 				}
 				$("main .content").append($content);
 			} else if ($element.parent().is(":nth-child(2)")){
-				var $content = $("<ul>");
+				$content = $("<ul>");
 				toDos.forEach(function(todo){
 					$content.append($("<li>").text(todo));
 				});
 				$("main .content").append($content);
 			} else if ($element.parent().is(":nth-child(3)")){
-				var organizedByTag = [
-				{
-					name: "shopping",
-					toDos: ["Get groceries"]
-				},
-				{
-					name: "chores",
-					toDos: ["Get groceries", "Take Gracie to the park"]
-				}];
-
-				organizedByTag = organizedByTags(toDoObjects);
-
-
-
-				organizedByTag.forEach(function (tag) {
+				organizedByTag.list.forEach(function (tag) {
 					var $tagName = $("<h3>").text(tag.name),
 						$content = $("<ul>");
 
@@ -96,19 +95,31 @@ var main = function () {
 					$("main .content").append($content);
 				})
 
-
-
 			} else if ($element.parent().is(":nth-child(4)")) {
-				$content = $("<span>");
+				var $input = $("<input>").addClass("todo"),
+					$inputLabel = $("<p>").text("Description:"),
+					$tagInput = $("<input>").addClass("tags"),
+					$tagLabel = $("<p>").text("Tags:"),
+					$button = $("<button>").text("+");
 
-				$content.append($("<input>").addClass("todo"));
-				$content.append($("<button>").text("+")).on("click", function(){
-					var msg;
-					if((msg = $("input.todo").val()) !== "") {
-						toDos.push(msg);
-						$("input.todo").val("");
-					}
+				$button.on("click", function(){
+					var description = $("input.todo").val(),
+						tagsCsv = $("input.tags").val(),
+						tags = tagsCsv.split(",");
+
+					organizedByTag.addToDo(description, tags);
+					toDoObjects.push({description: description, tags: tags});
+					toDos.push(description);
+					
+					$("input.todo").val("");
+					$("input.tags").val("");
 				});
+
+				$content = $("<div>").append($inputLabel)
+									 .append($input)
+									 .append($tagLabel)
+									 .append($tagInput)
+									 .append($button);
 
 				$("main .content").append($content);
 			}
